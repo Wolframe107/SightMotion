@@ -1,9 +1,9 @@
 {
   "dependencies": {
     "com.magicleap.unitysdk": {
-      "version": "file:../Assets/com.magicleap.unitysdk",
+      "version": "file:com.magicleap.unitysdk",
       "depth": 0,
-      "source": "local",
+      "source": "embedded",
       "dependencies": {
         "com.unity.xr.magicleap": "6.2.2"
       }
