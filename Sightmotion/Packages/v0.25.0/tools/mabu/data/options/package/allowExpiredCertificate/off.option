@@ -1,0 +1,2 @@
+# Fail with error when attempting to sign with an expired .cert.
+PKGFLAGS = allowExpiredCertificate=false

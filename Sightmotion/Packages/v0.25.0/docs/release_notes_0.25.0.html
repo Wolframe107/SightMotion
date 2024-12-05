@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+  <title>Lumin SDK Release Notes</title>
+
+<style>
+body {
+   font-family: Helvetica, arial, sans-serif;
+   font-size: 14px;
+   line-height: 1.6;
+   padding-top: 10px;
+   padding-bottom: 10px;
+   background-color: #f0f0f0;
+   padding: 30px; }
+
+body > *:first-child {
+   margin-top: 0 !important; }
+body > *:last-child {
+   margin-bottom: 0 !important; }
+
+a {
+   color: #4183C4; }
+a.absent {
+   color: #cc0000; }
+a.anchor {
+   display: block;
+   padding-left: 30px;
+   margin-left: -30px;
+   cursor: pointer;
+   position: absolute;
+   top: 0;
+   left: 0;
+   bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+   margin: 20px 0 10px;
+   padding: 0;
+   font-weight: bold;
+   -webkit-font-smoothing: antialiased;
+   cursor: text;
+   position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+   text-decoration: none; }
+
+h1 tt, h1 code {
+   font-size: inherit; }
+
+h2 tt, h2 code {
+   font-size: inherit; }
+
+h3 tt, h3 code {
+   font-size: inherit; }
+
+h4 tt, h4 code {
+   font-size: inherit; }
+
+h5 tt, h5 code {
+   font-size: inherit; }
+
+h6 tt, h6 code {
+   font-size: inherit; }
+
+h1 {
+   font-size: 32px;
+   color: #003399; }
+
+h2 {
+   font-size: 24px;
+   border-bottom: 1px solid #cccccc;
+   color: black; }
+
+h3 {
+   font-size: 18px; }
+
+h4 {
+   font-size: 16px; }
+
+h5 {
+   font-size: 14px; }
+
+h6 {
+   color: #777777;
+   font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+   margin: 15px 0; }
+
+hr {
+   border: 0 none;
+   color: #cccccc;
+   height: 4px;
+   padding: 0;
+}
+
+body > h2:first-child {
+   margin-top: 0;
+   padding-top: 0; }
+body > h1:first-child {
+   margin-top: 0;
+   padding-top: 0; }
+body > h1:first-child + h2 {
+   margin-top: 0;
+   padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+   margin-top: 0;
+   padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+   margin-top: 0;
+   padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+   margin-top: 0; }
+
+li p.first {
+   display: inline-block; }
+li {
+   margin: 0; }
+ul, ol {
+   padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+   margin-top: 0; }
+
+dl {
+   padding: 0; }
+dl dt {
+   font-size: 14px;
+   font-weight: bold;
+   font-style: italic;
+   padding: 0;
+   margin: 15px 0 5px; }
+dl dt:first-child {
+   padding: 0; }
+dl dt > :first-child {
+   margin-top: 0; }
+dl dt > :last-child {
+   margin-bottom: 0; }
+dl dd {
+   margin: 0 0 15px;
+   padding: 0 15px; }
+dl dd > :first-child {
+   margin-top: 0; }
+dl dd > :last-child {
+   margin-bottom: 0; }
+
+blockquote {
+   border-left: 4px solid #dddddd;
+   padding: 0 15px;
+   color: #777777; }
+blockquote > :first-child {
+   margin-top: 0; }
+blockquote > :last-child {
+   margin-bottom: 0; }
+
+table {
+   padding: 0;border-collapse: collapse; }
+table tr {
+   border-top: 1px solid #cccccc;
+   background-color: white;
+   margin: 0;
+   padding: 0; }
+table tr:nth-child(2n) {
+   background-color: #f8f8f8; }
+table tr th {
+   font-weight: bold;
+   border: 1px solid #cccccc;
+   margin: 0;
+   padding: 6px 13px; }
+table tr td {
+   border: 1px solid #cccccc;
+   margin: 0;
+   padding: 6px 13px; }
+table tr th :first-child, table tr td :first-child {
+   margin-top: 0; }
+table tr th :last-child, table tr td :last-child {
+   margin-bottom: 0; }
+
+img {
+   max-width: 100%; }
+
+span.frame {
+   display: block;
+   overflow: hidden; }
+span.frame > span {
+   border: 1px solid #dddddd;
+   display: block;
+   float: left;
+   overflow: hidden;
+   margin: 13px 0 0;
+   padding: 7px;
+   width: auto; }
+span.frame span img {
+   display: block;
+   float: left; }
+span.frame span span {
+   clear: both;
+   color: #333333;
+   display: block;
+   padding: 5px 0 0; }
+span.align-center {
+   display: block;
+   overflow: hidden;
+   clear: both; }
+span.align-center > span {
+   display: block;
+   overflow: hidden;
+   margin: 13px auto 0;
+   text-align: center; }
+span.align-center span img {
+   margin: 0 auto;
+   text-align: center; }
+span.align-right {
+   display: block;
+   overflow: hidden;
+   clear: both; }
+span.align-right > span {
+   display: block;
+   overflow: hidden;
+   margin: 13px 0 0;
+   text-align: right; }
+span.align-right span img {
+   margin: 0;
+   text-align: right; }
+span.float-left {
+   display: block;
+   margin-right: 13px;
+   overflow: hidden;
+   float: left; }
+span.float-left span {
+   margin: 13px 0 0; }
+span.float-right {
+   display: block;
+   margin-left: 13px;
+   overflow: hidden;
+   float: right; }
+span.float-right > span {
+   display: block;
+   overflow: hidden;
+   margin: 13px auto 0;
+   text-align: right; }
+
+code, tt {
+   margin: 0 2px;
+   padding: 0 5px;
+   white-space: nowrap;
+   border: 1px solid #eaeaea;
+   background-color: #f8f8f8;
+   border-radius: 3px; }
+
+pre code {
+   margin: 0;
+   padding: 0;
+   white-space: pre;
+   border: none;
+   background: transparent; }
+
+.highlight pre {
+   background-color: #f8f8f8;
+   border: 1px solid #cccccc;
+   font-size: 13px;
+   line-height: 19px;
+   overflow: auto;
+   padding: 6px 10px;
+   border-radius: 3px; }
+
+pre {
+   background-color: #f8f8f8;
+   border: 1px solid #cccccc;
+   font-size: 13px;
+   line-height: 19px;
+   overflow: auto;
+   padding: 6px 10px;
+   border-radius: 3px; }
+pre code, pre tt {
+   background-color: transparent;
+   border: none; }
+
+sup {
+   font-size: 0.83em;
+   vertical-align: super;
+   line-height: 0;
+}
+
+div.version {
+   padding: 10px;
+   padding-left: 30px;
+   padding-right: 30px;
+   background-color: #EBF5FF;
+   font-style: italic;
+}
+
+div.version:first-of-type {
+   background-color: #f8f8f8;
+   font-style: normal;
+}
+
+* {
+     -webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+   body {
+      width: 854px;
+      margin:0 auto;
+   }
+}
+@media print {
+     table, pre {
+          page-break-inside: avoid;
+     }
+     pre {
+          word-wrap: break-word;
+     }
+}
+</style>
+</head>
+
+<body>
+  <h1>Lumin SDK Release Notes</h1>
+  <p>This document contains the Lumin SDK release notes including the notes for
+    the core SDK, Unity&reg; integration, and Unreal Engine integration.</p>
+<div class='version'>
+  <meta charset="UTF-8">
+  <h1><strong>Lumin SDK 0.25.0</strong></h1>
+
+  <ul>
+    <li>Lumin OS 0.98.20</li>
+  </ul>
+
+  <p>Magic Leap's hardware and software is in a qualified developer release state right now. Some features or functionality of the Magic Leap hardware or software may not be available, may contain bugs or other defects, and/or may experience delays or failures. Please take a close look at this document since it contains valuable guidance on the current state of Magic Leap's hardware and software to help developers make the best possible use of the platform during our pre-release period. Want to know more? Head to the forums on our developer portal for more guidance.</p>
+
+
+  <h2><strong>C API</strong></h2>
+
+  <h3><strong>Features</strong></h3>
+
+  <ul>
+    <li><strong>MLBarcode:</strong> Introduces support for scanning barcodes. The current release only supports Mode 1 and Model 2 QR codes. For the QR codes, the API will provide both encoded data and its 6DOF pose. Future release will add support for other types of barcode.</li>
+    <li><strong>MLImuTracking:</strong> Introduces IMU sensor data APIs. Applications can query the IMU sensors in the Lightwear and Lightpack. IMU sensor data is not correct for gravity.</li>
+    <li><strong>MLMRCamera:</strong> Introduces support for capturing mixed reality content. The API blends the digital content with the frames from the camera sensor.</li>
+    <li><strong>MLIdentifier:</strong> Introduces APIs to get application instance ID. The user can reset this ID by factory resetting the device.</li>
+  </ul>
+
+  <h3><strong>Updates to Existing Features</strong></h3>
+
+  <ul>
+    <li><strong>MLCamera</strong>: Added support for using hardware surface.</li>
+    <li><strong>MLEyeTracking</strong>: Added an API to provide left and right eye pupil size.</li>
+    <li><strong>MLMediaCodec</strong>
+        <ul>
+          <li>Added an API to query supported bit rate modes.</li>
+          <li>Added support to set the bit rate on the fly.</li>
+          <li>Added support for hardware accelerated input surface with encoder.</li>
+          <li>Added more enumeration for constants used in configuring the codec.</li>
+        </ul>
+    </li>
+  </ul>
+
+  <h3><strong>Deprecation Notice</strong></h3>
+
+  <ul>
+    <li><strong>MLCamera:</strong> MLCameraPrepareCapture is deprecated and replaced by MLCameraPrepareCaptureEx.</li>
+      <li><strong>MLEyeTracking:</strong>
+        <ul>
+          <li>MLEyeTrackingGetState is deprecated and replaced by MLEyeTrackingGetStateEx.</li>
+          <li>MLEyeTrackingState is deprecated and replaced by MLEyeTrackingStateEx.</li>
+        </ul>
+      </li>
+  </ul>
+
+  <h3><strong>Notes</strong></h3>
+
+  <ul>
+    <li>For App Instance ID, a user can reset the ID by factory resetting the device.</li>
+  </ul>
+
+  <h2><strong>mabu</strong></h2>
+
+  <h3><strong>Features</strong></h3>
+
+  <ul>
+    <li>Updated detection for Xcode 12.x</li>
+    <li>Add check whether a .cert has expired or is invalid before the lower-level "sign-file" returns a hard-to-interpret error.</li>
+  </ul>
+
+  <h3><strong>Bug Fixes</strong></h3>
+
+  <ul>
+    <li>Fix bug handling the "-s" argument when using the "--re-sign" command. Resigning will now tolerate the ".cert" or ".privkey" extensions in this option.</li>
+    <li>Fix bug when the "-t" target / build specification references an unknown platform (for example). Instead of complaining about "multiple configuration segments", now mabu references "unknown target segment".
+Known issues</li>
+  </ul>
+
+  <h3><strong>Known Issues</strong></h3>
+
+  <ul>
+    <li>mabu cannot run on macOS Big Sur without manual steps. See README-macOS-Big-Sur.md in the root of the SDK for instructions.</li>
+  </ul>
+
+</div>
+<!-- No 0.25.0 LR build --><!-- 0.25.0 No LR Editor --><div class='version'>
+  <h1><strong>Unity&reg; Package 0.25.0</strong></h1>
+
+  <ul>
+    <li>Lumin SDK Version 0.25.0</li>
+    <li>Unity&reg; Version: 2020.2</li>
+    <li>Lumin OS 0.98.20</li>
+  </ul>
+
+  <p>Magic Leap's hardware and software is in a qualified developer release state right now. Some features or functionality of the Magic Leap hardware or software may not be available, may contain bugs or other defects, and/or may experience delays or failures. Please take a close look at this document since it contains valuable guidance on the current state of Magic Leap's hardware and software to help developers make the best possible use of the platform during our pre-release period. Want to know more? Head to the forums on our developer portal for more guidance.</p>
+
+  <h2><strong>Features</strong></h2>
+
+  <ul>
+    <li>Official support for Unity editor version 2020.2 and Magic Leap XR Plugin version 6.1.0-preview.2.</li>
+    <li>New WebRTC API that exposes a subset of the official WebRTC APIs to allow apps to send & receive audio, video and data streams between multiple peers over the network. This also includes helper implementations to stream video feed from the color camera or Mixed Reality Camera and audio feed from the device microphone.</li>
+    <li>New MRCamera API allows capture of the composited video the color camera and app content.</li>
+    <li>New Barcode Scanner API allows for QR code detection.</li>
+    <li>New IMU API for reading IMU data.</li>
+    <li>New ID API for determining device ID.</li>
+    <li>Modified eye tracking API (MLEyes) to expose pupil size.</li>
+    <li>New Found Objects example.</li>
+    <li>New Aruco tracking example.</li>
+  </ul>
+
+  <h2><strong>Bug Fixes</strong></h2>
+
+  <ul>
+    <li>Fixed a crash in UserInterface.cs on app termination and on ending play mode in the editor.</li>
+    <li>Fixed a bug in MLCamera where its apis would fail to work after recovering from a system-level eviction. Priority processes like Device Capture and Device Stream evict app's hold on the camera and return it back once those processes are done. The fix now auto-resumes the camera state that was before the eviction.</li>
+    <li>Fixed a bug in MLPlanes where the min plane area query setting was not respected.</li>
+    <li>Switched PoseSource to 'CenterEye' in the MainCamera prefab to get rid of the editor warning.</li>
+  </ul>
+
+  <h2><strong>Updates</strong></h2>
+
+  <ul>
+    <li>Input, Eyes, Privileges, Hand Tracking, Camera, CV Camera, Raycast, Planes, and Image Tracking APIs are now AutoAPIs (see this page for more info: https://developer.magicleap.com/en-us/learn/guides/auto-api-changes).</li>
+    <li>CVCamera APIs have been moved from MLCamera into its own MLCVCamera class, removing the requirement from MLCamera users to specify the ComputerVision privilege if they don't intend on using that feature.</li>
+    <li>Exposed an event named OnRawVideoFrameAvailableYUV_NativeCallbackThread in the MLCamera class which provides the frame data via pointers to unmanaged memory. This event is more efficient to use in systems where the camera frames need to be sent from Unity to an unmanaged C/C++ library like WebRTC, OpenCV or any kind of media encoder.</li>
+    <li>Exposed asynchronous variants of expensive MLCamera functions. Each of these is accompanied with an event which is invoked when the asynchronous operation is completed.</li>
+    <li>The VideoCapture example has been split into VideoCapture (showcasing video capture to file) and RawVideoCapture (showcasing video capture to YUV frames delivered to the app).</li>
+  </ul>
+
+  <h2><strong>Deprecations &amp; Removals</strong></h2>
+
+  <ul>
+    <li>All APIs marked deprecated in the 0.24.2 release have been removed.</li>
+    <li>'Start()' and 'Stop() methods of Input, Eyes, Privileges, Hand Tracking, Camera, CV Camera, Raycast, Planes, and Image Tracking APIs have been deprecated (see this page for more info: https://developer.magicleap.com/en-us/learn/guides/auto-api-changes).</li>
+    <li>'MLCamera.IntrinsicCalibrationParameters', 'MLCamera.GetIntrinsicCalibrationParameters()' and 'MLCamera.GetFramePose()'' have been deprecated in favor of their 'MLCVCamera' counterparts.</li>
+  </ul>
+
+  <h2><strong>Known Issues</strong></h2>
+
+  <ul>
+    <li>With Unity 2020.2 on Windows, sometimes the XR Plug-in Management settings will be grayed out. This can be fixed by closing the editor, using 'regedit' to delete 'Computer\HKEY_CURRENT_USER\Software\Unity Technologies\Unity Editor 5.x\XRMGT Rebuilding Cache'</li>
+    <li>Unity cannot build packages on macOS Big Sur without manual steps. See README-macOS-Big-Sur.md in the root of the SDK for instructions</li>
+    <li>When using Zero Iteration, Eye Tracking does not work with the Unity XR package (6.1.0-preview2)</li>
+    <li>MLCamera and MRCamera operations are not implemented asynchronously in this release and can thus cause hitches during startup and shutdown</li>
+    <li>WebRTC peer connection is lost if the app is paused for more than 15 seconds and will need to be recreated when the app is resumed.</li>
+  </ul>
+
+<hr>
+
+  <h1><strong>Unity&reg; SoundField Audio Plugin</strong></h1>
+
+  <h2><strong>Bug Fixes</strong></h2>
+
+  <ul>
+    <li>Fix for MSA Unity Plugin: Setting MSASource.Gain to values over 1.0 result in no audible gain</li>
+    <li>Fix for MSA Unity Plugin: Radiation properties stop updating when object scale is not 1, 1, 1</li>
+  </ul>
+
+
+</div>
+<!-- 0.25.0 does not add a unreal build -->
+</body>
+</html>

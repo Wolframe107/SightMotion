@@ -65,7 +65,7 @@
     },
     "com.unity.subsystemregistration": {
       "version": "1.1.0",
-      "depth": 2,
+      "depth": 3,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.subsystems": "1.0.0"
@@ -113,9 +113,19 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "com.unity.xr.arfoundation": {
+      "version": "4.1.7",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.xr.management": "4.0.1",
+        "com.unity.xr.arsubsystems": "4.1.7"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.xr.arsubsystems": {
       "version": "4.1.13",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.subsystemregistration": "1.1.0"
@@ -167,22 +177,22 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.magicleap": {
-      "version": "6.4.1",
+      "version": "6.4.2-preview.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.ugui": "1.0.0",
         "com.unity.modules.vr": "1.0.0",
         "com.unity.modules.xr": "1.0.0",
-        "com.unity.xr.management": "4.0.7",
-        "com.unity.xr.arsubsystems": "4.0.12",
+        "com.unity.xr.management": "4.1.0",
+        "com.unity.xr.arfoundation": "4.1.7",
         "com.unity.modules.screencapture": "1.0.0",
         "com.unity.xr.interactionsubsystems": "1.0.1"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.management": {
-      "version": "4.0.7",
+      "version": "4.1.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
