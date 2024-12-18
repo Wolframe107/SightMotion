@@ -17,6 +17,11 @@ public class TargetHandler : MonoBehaviour {
     private GameObject[] targets;
     private float[] targetTimers;
 
+    // Raycast variables
+    public Vector3 resultPoint = new Vector3(0, 0, 0);
+    private float closestDistance = 0f;
+    private GameObject closestTarget;
+
     // Start is called before the first frame update
     void Start() {
         targets = new GameObject[targetCount];
@@ -51,11 +56,42 @@ public class TargetHandler : MonoBehaviour {
         direction = Camera.main.transform.forward;
         
         // Raycast and update target color if hit
+        /*
         if (Physics.Raycast(new Ray(position, direction), out RaycastHit hit)) {
             if (hit.collider.gameObject.name == "Target") {
                 int index = System.Array.IndexOf(targets, hit.collider.gameObject);
                 targetTimers[index] = Mathf.Max(0.0f, targetTimers[index] - Time.deltaTime * 10.0f);
             }
+        }
+        */
+
+        // Use resultPoint to know which target is looked at
+        if (resultPoint != Vector3.zero)
+        {   
+            Debug.Log("Target Hit!" + resultPoint);
+
+            foreach (GameObject targetObject in targets)
+            {
+                float distance = Vector3.Distance(targetObject.transform.position, resultPoint);
+
+                // If this target is closer than the previously found target, update closestTarget
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestTarget = targetObject;
+                }
+            }
+
+            int index = System.Array.IndexOf(targets, closestTarget);
+            if (index >= 0) // Ensure the target was found
+            {
+                targetTimers[index] = Mathf.Max(0.0f, targetTimers[index] - Time.deltaTime * 10.0f);
+            }
+            else
+            {
+                Debug.LogError("Closest target not found in the targets list!");
+            }
+            //targetTimers[index] = Mathf.Max(0.0f, targetTimers[index] - Time.deltaTime * 10.0f);
         }
 
         // Update target timers and colors

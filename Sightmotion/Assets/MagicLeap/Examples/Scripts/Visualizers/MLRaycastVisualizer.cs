@@ -33,11 +33,16 @@ namespace MagicLeap
         // Stores Renderer component
         private Renderer _render = null;
 
+        private TargetHandler targetHandler;
+
         /// <summary>
         /// Initializes variables and makes sure needed components exist.
         /// </summary>
         void Awake()
-        {
+        {       
+            // Access target handler
+            targetHandler = GameObject.Find("TargetHandler").GetComponent<TargetHandler>();
+
             // Check if the Layer is set to Default and disable any child colliders.
             if (gameObject.layer == LayerMask.NameToLayer("Default"))
             {
@@ -93,6 +98,8 @@ namespace MagicLeap
         {
             if (state != MLRaycast.ResultState.RequestFailed && state != MLRaycast.ResultState.NoCollision)
             {
+                targetHandler.resultPoint = result.point;
+
                 gameObject.SetActive(true);
                 // Update the cursor position and normal.
                 transform.position = result.point;
@@ -113,7 +120,8 @@ namespace MagicLeap
                 }
             }
             else
-            {
+            {   
+                targetHandler.resultPoint = new Vector3(0,0,0);
                 gameObject.SetActive(false);
             }
         }

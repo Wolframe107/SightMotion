@@ -8,9 +8,24 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainScene.unity
     guid: f768744aaca9b6346b3aede889bae9cf
+  - enabled: 1
+    path: Assets/TargetRaycasting.unity
+    guid: ce8513e6a933b1d42ac11f4469d01cc0
+  - enabled: 0
+    path: Assets/MagicLeap/Examples/Intermediate/Scenes/Raycast.unity
+    guid: 6c94c849b074e2c4883092293f337b1f
+  - enabled: 0
+    path: Assets/MagicLeap/Examples/Intermediate/Scenes/MobileApp.unity
+    guid: ccb836e31dba83841bb2120712b3741a
+  - enabled: 0
+    path: Assets/MagicLeap/Examples/Intermediate/Scenes/AudioCapture.unity
+    guid: ff47925fa63e39e438c7db235b18fff9
+  - enabled: 0
+    path: Assets/MagicLeap/Examples/Beginner/Scenes/HelloWorld.unity
+    guid: bb62d4c1f57c2464c91843ac2fcd932f
   m_configObjects:
     com.unity.xr.magicleap.magic_leap_settings: {fileID: 11400000, guid: 6959f1f3f49d15244aa9251fbf7efd22, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 1b76aa85c08e50240897186583246b55, type: 2}

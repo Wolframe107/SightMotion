@@ -175,6 +175,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4161810882813885638, guid: e6801a2de63af38448df1609d448b31f, type: 3}
+      propertyPath: mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161810882813885638, guid: e6801a2de63af38448df1609d448b31f, type: 3}
       propertyPath: direction
       value: 0
       objectReference: {fileID: 0}
@@ -1040,8 +1044,9 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   direction: {x: 0, y: 0, z: 1}
   targetCount: 10
-  targetDistance: 10
-  targetScale: 1
+  targetDistance: 1
+  targetScale: 0.3
+  resultPoint: {x: 0, y: 0, z: 0}
 --- !u!4 &1298462531
 Transform:
   m_ObjectHideFlags: 0
@@ -1312,6 +1317,10 @@ PrefabInstance:
     - target: {fileID: 4161810882813885637, guid: e6801a2de63af38448df1609d448b31f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161810882813885638, guid: e6801a2de63af38448df1609d448b31f, type: 3}
+      propertyPath: mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4161810882813885638, guid: e6801a2de63af38448df1609d448b31f, type: 3}
       propertyPath: direction

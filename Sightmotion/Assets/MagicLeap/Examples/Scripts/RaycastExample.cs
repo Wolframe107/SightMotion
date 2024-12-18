@@ -28,7 +28,7 @@ namespace MagicLeap
     {
         public enum RaycastMode
         {
-            //Controller,
+            Controller,
             Head,
             Eyes
         }
@@ -51,7 +51,7 @@ namespace MagicLeap
         [Space, SerializeField, Tooltip("MLControllerConnectionHandlerBehavior reference.")]
         private MLControllerConnectionHandlerBehavior _controllerConnectionHandler = null;
 
-        private RaycastMode _raycastMode = RaycastMode.Head;
+        private RaycastMode _raycastMode = RaycastMode.Controller;
         private int _modeCount = System.Enum.GetNames(typeof(RaycastMode)).Length;
 
         private float _confidence = 0.0f;
@@ -100,8 +100,8 @@ namespace MagicLeap
             _raycastController.gameObject.SetActive(false);
             _raycastHead.gameObject.SetActive(false);
             _raycastEyes.gameObject.SetActive(false);
-            //_raycastMode = RaycastMode.Controller;
-            _raycastMode = RaycastMode.Head;
+            _raycastMode = RaycastMode.Controller;
+            //_raycastMode = RaycastMode.Head;
             UpdateRaycastMode();
 
             //_raycastMode = (RaycastMode)((int)(_raycastMode + 1) % _modeCount); // Added by mille
@@ -135,12 +135,12 @@ namespace MagicLeap
 
             switch (_raycastMode)
             {
-                /*
+                
                 case RaycastMode.Controller:
                 {
                     EnableRaycast(_raycastController);
                     break;
-                } by mille :)*/
+                } 
                 case RaycastMode.Head:
                 {
                     EnableRaycast(_raycastHead);
