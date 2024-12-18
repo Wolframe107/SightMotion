@@ -682,7 +682,7 @@ PlayerSettings:
     m_ModelFolderPath: 
     m_PortalFolderPath: 
   luminCert:
-    m_CertPath: C:/Users/MoistulatVr/Desktop/cet/multimodal.cert
+    m_CertPath: C:/Users/Slasklada/Desktop/cert/test.cert
     m_SignPackage: 1
   luminIsChannelApp: 0
   luminVersion:
