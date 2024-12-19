@@ -19,7 +19,7 @@ public class TargetHandler : MonoBehaviour {
 
     // Raycast variables
     public Vector3 resultPoint = new Vector3(0, 0, 0);
-    private float closestDistance = 0f;
+    private float closestDistance = 9999999.0f;
     private GameObject closestTarget;
 
     // Start is called before the first frame update
@@ -33,7 +33,7 @@ public class TargetHandler : MonoBehaviour {
 
             // Add collider and tag for raycast
             target.AddComponent<SphereCollider>();
-            target.name = "Target";
+            target.name = "Target" + i.ToString();
             target.GetComponent<MeshRenderer>().material.color = new Color(Random.value, Random.value, Random.value);
             
             // Set position
@@ -63,36 +63,40 @@ public class TargetHandler : MonoBehaviour {
                 targetTimers[index] = Mathf.Max(0.0f, targetTimers[index] - Time.deltaTime * 10.0f);
             }
         }
+        
         */
-
         // Use resultPoint to know which target is looked at
+        
         if (resultPoint != Vector3.zero)
         {   
             Debug.Log("Target Hit!" + resultPoint);
-
-            foreach (GameObject targetObject in targets)
+            //closestTarget = targets[0];
+            closestDistance = 9999999.0f;
+            foreach (GameObject target in targets)
             {
-                float distance = Vector3.Distance(targetObject.transform.position, resultPoint);
+                float distance = Vector3.Distance(target.transform.position, resultPoint);
 
                 // If this target is closer than the previously found target, update closestTarget
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
-                    closestTarget = targetObject;
+                    closestTarget = target;
+
+                    //Debug.Log("new target! " + closestTarget);
                 }
             }
 
+            //Debug.Log("Closest Target: " + closestTarget);
+
             int index = System.Array.IndexOf(targets, closestTarget);
-            if (index >= 0) // Ensure the target was found
+            Debug.Log("Index of closest target: " + index);
+            if (index != -1)
             {
                 targetTimers[index] = Mathf.Max(0.0f, targetTimers[index] - Time.deltaTime * 10.0f);
+                //Debug.Log("Cooling Down Target " + index);
             }
-            else
-            {
-                Debug.LogError("Closest target not found in the targets list!");
-            }
-            //targetTimers[index] = Mathf.Max(0.0f, targetTimers[index] - Time.deltaTime * 10.0f);
         }
+        
 
         // Update target timers and colors
         for (int i = 0; i < targets.Length; i++) {
