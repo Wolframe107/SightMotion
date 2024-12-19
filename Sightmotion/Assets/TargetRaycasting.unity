@@ -3729,7 +3729,7 @@ MonoBehaviour:
   fieldOfView: 60
   targetSpawnInterval: 5
   targetMaxTime: 30
-  lookAtTimeScale: 5
+  lookAtTimeScale: 10
   targetCount: 10
   targetDistance: 3
   targetScale: 0.3

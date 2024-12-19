@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TargetHandler : MonoBehaviour {
 
@@ -97,7 +98,7 @@ public class TargetHandler : MonoBehaviour {
     public void GameOver() {
 
         // Set game over text
-        gameOverText.GetComponent<TextMesh>().text = "Game Over\nTargets Activated: " + targetTimers.Count + "\nTime: " + (Time.time - startTime).ToString("F2") + "s";
+        gameOverText.GetComponent<Text>().text = "Game Over\nTargets Activated: " + targetTimers.Count + "\nTime: " + (Time.time - startTime).ToString("F2") + "s";
 
         // Stop game
         StartMenu.SetActive(false);
