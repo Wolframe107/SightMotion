@@ -1,107 +1,137 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TargetHandler : MonoBehaviour {
 
-    [Header("Debug Raycast Settings")]
-    public Vector3 position = new Vector3(0, 0, 0);
-    public Vector3 direction = new Vector3(0, 0, 1);
+    [Header("Gameplay Settings")]
+    public float fieldOfView = 180.0f;
+    public float targetSpawnInterval = 10.0f;
+    public float targetMaxTime = 60.0f;
+    public float lookAtTimeScale = 10.0f;
 
     [Header("Target Settings")]
     public int targetCount = 10;
     public float targetDistance = 10.0f;
     public float targetScale = 1f;
+    [Tooltip("The distance from the target that the raycast will hit")]
+    public float allowance = 0.2f;
 
     // List of targets and timers
-    private GameObject[] targets;
-    private float[] targetTimers;
+    private float startTime = 0.0f;
+    private float targetSpawnTimer = 0.0f;
+    private Dictionary<GameObject, float> targetTimers = new Dictionary<GameObject, float>();
 
-    // Raycast variables
-    public Vector3 resultPoint = new Vector3(0, 0, 0);
-    private float closestDistance = 9999999.0f;
-    private GameObject closestTarget;
+    private bool running = false;
 
-    // Start is called before the first frame update
+    public GameObject StartMenu;
+    public GameObject GameOverMenu;
+
+    public GameObject gameOverText;
+
     void Start() {
-        targets = new GameObject[targetCount];
-        targetTimers = new float[targetCount];
-        
-        // Generate a list of targets
-        for (int i = 0; i < targetCount; i++) {
-            GameObject target = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-
-            // Add collider and tag for raycast
-            target.AddComponent<SphereCollider>();
-            target.name = "Target" + i.ToString();
-            target.GetComponent<MeshRenderer>().material.color = new Color(Random.value, Random.value, Random.value);
-            
-            // Set position
-            float angle = i * 2 * Mathf.PI / targetCount;
-            target.transform.position = transform.position + targetDistance * new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
-            target.transform.localScale *= targetScale;
-            target.transform.parent = transform;
-
-            // Add to list
-            targets[i] = target;
-            targetTimers[i] = 0.0f;
-        }
+        StartMenu.SetActive(true);
+        GameOverMenu.SetActive(false);
     }
 
     // Update is called once per frame
     void Update() {
+        if (!running) { return; }
 
-        // Set raycast position and direction for testing
-        position = Camera.main.transform.position;
-        direction = Camera.main.transform.forward;
-        
-        // Raycast and update target color if hit
-        /*
-        if (Physics.Raycast(new Ray(position, direction), out RaycastHit hit)) {
-            if (hit.collider.gameObject.name == "Target") {
-                int index = System.Array.IndexOf(targets, hit.collider.gameObject);
-                targetTimers[index] = Mathf.Max(0.0f, targetTimers[index] - Time.deltaTime * 10.0f);
-            }
+        // Update target spawn timer
+        targetSpawnTimer -= Time.deltaTime;
+
+        // Add target if interval has passed
+        if (targetSpawnTimer <= 0.0f && targetTimers.Count < targetCount) {
+            AddTarget();
+            targetSpawnTimer = targetSpawnInterval;
         }
-        
-        */
-        // Use resultPoint to know which target is looked at
-        
-        if (resultPoint != Vector3.zero)
-        {   
-            Debug.Log("Target Hit!" + resultPoint);
-            //closestTarget = targets[0];
-            closestDistance = 9999999.0f;
-            foreach (GameObject target in targets)
-            {
-                float distance = Vector3.Distance(target.transform.position, resultPoint);
-
-                // If this target is closer than the previously found target, update closestTarget
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    closestTarget = target;
-
-                    //Debug.Log("new target! " + closestTarget);
-                }
-            }
-
-            //Debug.Log("Closest Target: " + closestTarget);
-
-            int index = System.Array.IndexOf(targets, closestTarget);
-            Debug.Log("Index of closest target: " + index);
-            if (index != -1)
-            {
-                targetTimers[index] = Mathf.Max(0.0f, targetTimers[index] - Time.deltaTime * 10.0f);
-                //Debug.Log("Cooling Down Target " + index);
-            }
-        }
-        
 
         // Update target timers and colors
-        for (int i = 0; i < targets.Length; i++) {
-            targetTimers[i] += Time.deltaTime;
-            targets[i].GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f - targetTimers[i] / 10.0f, 1.0f - targetTimers[i] / 10.0f);
+        GameObject[] targets = new GameObject[targetTimers.Count];
+        targetTimers.Keys.CopyTo(targets, 0);
+        foreach (GameObject target in targets) {
+            targetTimers[target] += Time.deltaTime;
+            target.GetComponent<Renderer>().material.color = Color.Lerp(Color.white, Color.red, targetTimers[target] / targetMaxTime);
+
+            if (targetTimers[target] >= targetMaxTime) {
+                GameOver();
+            }
         }
+    }
+
+    // Updates target timer if hit
+    public void RayCastHit(Vector3 target) {
+        if (!running) { return; }
+        if (Physics.Raycast(Camera.main.transform.position, target - Camera.main.transform.position, out RaycastHit hit)) {
+            if (targetTimers.ContainsKey(hit.collider.gameObject)) {
+                targetTimers[hit.collider.gameObject] = Mathf.Max(0.0f, targetTimers[hit.collider.gameObject] - Time.deltaTime * lookAtTimeScale);
+            }
+        }
+    }
+
+    // Add target
+    public void AddTarget() {
+        GameObject target = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+
+        // Add collider and tag for raycast
+        SphereCollider collider = target.AddComponent<SphereCollider>();
+        collider.radius *= (1 + allowance);
+        target.name = "Target";
+        
+        // Calculate angle, evenly spaces targets around player
+        int i = targetTimers.Count + (targetCount % 2 == 0 ? 2 : 1);
+        float angle = (i / 2) * (fieldOfView / (targetCount / 2 + 1)) * Mathf.Deg2Rad * (i % 2 == 0 ? 1 : -1) + Mathf.PI / 2;
+        angle -= 0.5f * (fieldOfView / (targetCount / 2 + 1)) * Mathf.Deg2Rad * (i % 2 == 0 ? 1 : -1) * (targetCount % 2 == 0 ? 1 : 0);
+        angle -= fieldOfView * (i % 2 == 0 ? 1 : -1) * (i / targetCount);
+        
+        // Set position
+        target.transform.position = transform.position + targetDistance * new Vector3(Mathf.Cos(angle), ((i / 2) % 2 == 0 ? 1 : -1) * (i / 2) / targetCount, Mathf.Sin(angle));
+        target.transform.localScale *= targetScale;
+        target.transform.parent = transform;
+
+        // Add to list
+        targetTimers.Add(target, 0.0f);
+    }
+
+    // Game over
+    public void GameOver() {
+
+        // Set game over text
+        gameOverText.GetComponent<Text>().text = "Game Over\nTargets Activated: " + targetTimers.Count + "\nTime: " + (Time.time - startTime).ToString("F2") + "s";
+
+        // Stop game
+        StartMenu.SetActive(false);
+        GameOverMenu.SetActive(true);
+
+        running = false;
+    }
+
+    public void RestartGame() {
+        StartMenu.SetActive(true);
+        GameOverMenu.SetActive(false);
+
+        // Destroy all
+        GameObject[] targets = new GameObject[targetTimers.Count];
+        targetTimers.Keys.CopyTo(targets, 0);
+        foreach (GameObject target in targets) {
+            Destroy(target);
+        }
+
+        // Clear list
+        targetTimers = new Dictionary<GameObject, float>();
+    }
+
+    // Start game
+    public void StartGame() {
+        startTime = Time.time;
+        targetSpawnTimer = targetSpawnInterval;
+
+        // Start game
+        StartMenu.SetActive(false);
+        GameOverMenu.SetActive(false);
+
+        running = true;
     }
 }

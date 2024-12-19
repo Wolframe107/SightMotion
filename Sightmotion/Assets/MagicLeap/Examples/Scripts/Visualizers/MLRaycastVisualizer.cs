@@ -98,7 +98,7 @@ namespace MagicLeap
         {
             if (state != MLRaycast.ResultState.RequestFailed && state != MLRaycast.ResultState.NoCollision)
             {
-                targetHandler.resultPoint = result.point;
+                targetHandler.RayCastHit(result.point);
 
                 gameObject.SetActive(true);
                 // Update the cursor position and normal.
@@ -121,7 +121,6 @@ namespace MagicLeap
             }
             else
             {   
-                targetHandler.resultPoint = new Vector3(0,0,0);
                 gameObject.SetActive(false);
             }
         }
