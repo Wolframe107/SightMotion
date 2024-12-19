@@ -30,9 +30,12 @@ public class TargetHandler : MonoBehaviour {
 
     public GameObject gameOverText;
 
+    public SaveData saveData;
+
     void Start() {
         StartMenu.SetActive(true);
         GameOverMenu.SetActive(false);
+        saveData = GameObject.Find("SaveObject").GetComponent<SaveData>();    
     }
 
     // Update is called once per frame
@@ -59,6 +62,8 @@ public class TargetHandler : MonoBehaviour {
                 GameOver();
             }
         }
+
+        saveData.WriteData("head", Camera.main.transform.eulerAngles);
     }
 
     // Updates target timer if hit
@@ -66,6 +71,10 @@ public class TargetHandler : MonoBehaviour {
         if (!running) { return; }
         if (Physics.Raycast(Camera.main.transform.position, target - Camera.main.transform.position, out RaycastHit hit)) {
             if (targetTimers.ContainsKey(hit.collider.gameObject)) {
+                saveData.WriteData("gaze", Quaternion.LookRotation(Camera.main.transform.forward).eulerAngles);
+                
+                saveData.WriteData("eye", Quaternion.LookRotation(hit.point - Camera.main.transform.position).eulerAngles);
+
                 targetTimers[hit.collider.gameObject] = Mathf.Max(0.0f, targetTimers[hit.collider.gameObject] - Time.deltaTime * lookAtTimeScale);
             }
         }
@@ -106,6 +115,13 @@ public class TargetHandler : MonoBehaviour {
         GameOverMenu.SetActive(true);
 
         running = false;
+
+        // Save data
+        saveData.WriteData("result", Vector3.zero, (Time.time - startTime).ToString("F2"));
+        
+        //saveData.WriteData("head", Vector3.zero, (Time.time - startTime).ToString("F2"));
+
+        saveData.SaveAllData();
     }
 
     public void RestartGame() {

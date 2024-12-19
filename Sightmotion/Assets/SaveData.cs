@@ -7,48 +7,115 @@ public class SaveData : MonoBehaviour
 {
     public GameObject posVec;
     private TargetHandler handlerScript;
-    private string positionDataFilePath; // ändra till rätt data
-    private List<string> positionData;
+    private string headPath;
+    private string gazePath;
+    private string eyePath;
+    private string resultPath;
+
+    private List<string> headData;
+    private List<string> gazeData;
+    private List<string> eyeData;
+    private List<string> resultData;
 
     void Start()
     {
-
         handlerScript = posVec.GetComponent<TargetHandler>();
-        positionData = new List<string>();
-        positionDataFilePath = Path.Combine(Application.persistentDataPath, "TEST.csv");
-        if (File.Exists(positionDataFilePath)){
-            File.Delete(positionDataFilePath);
-        }
-        Debug.Log(positionDataFilePath);
+        headData = new List<string>();
+        gazeData = new List<string>();
+        eyeData = new List<string>();
+        resultData = new List<string>();
 
+        headPath = Path.Combine(Application.persistentDataPath, "headData.csv");
+        gazePath = Path.Combine(Application.persistentDataPath, "gazeData.csv");
+        eyePath = Path.Combine(Application.persistentDataPath, "eyeData.csv");
+        resultPath = Path.Combine(Application.persistentDataPath, "resultData.csv");
+        //positionDataFilePath = Path.Combine(Application.persistentDataPath, "testData.csv");
+
+        // Wipe old test
+        if (File.Exists(headPath)){
+            File.Delete(headPath);
+        }
+
+        if (File.Exists(gazePath)){
+            File.Delete(gazePath);
+        }
+
+        if (File.Exists(eyePath)){
+            File.Delete(eyePath);
+        }
+
+        if (File.Exists(resultPath)){
+            File.Delete(resultPath);
+        }
+
+        //Debug.Log(positionDataFilePath);
 
         // Write the header line to the position data file
-        File.WriteAllText(positionDataFilePath, "TimeStamp, PosX, PosY, PosZ\n"); // ändra till rätt grejer
+        File.WriteAllText(headPath, "TimeStamp, PosX, PosY, PosZ\n");
+        File.WriteAllText(gazePath, "TimeStamp, PosX, PosY, PosZ\n");
+        File.WriteAllText(eyePath, "TimeStamp, PosX, PosY, PosZ\n");
+        File.WriteAllText(resultPath, "TimeStamp, Result\n");
+
         Debug.Log("Completed Start");
     }
 
-    void Update()
-    {
-        Vector3 currentTrackerPosition = handlerScript.resultPoint;
+    public void WriteData(string mode, Vector3 pos, string FinalResult=""){
+        switch (mode) {
+            case "head":
+                string headDataLine = string.Format(
+                    "{0},{1},{2},{3}",
+                    DateTime.Now,
+                    pos.x, pos.y, pos.z
+                );
+                headData.Add(headDataLine);
+                break;
 
-        // Format the current positions into a string for the CSV file
-        string positionDataLine = string.Format(
-            "{0},{1},{2},{3}",
-            DateTime.Now,
-            currentTrackerPosition.x, currentTrackerPosition.y, currentTrackerPosition.z
-        );
+            case "gaze":
+                string gazeDataLine = string.Format(
+                    "{0},{1},{2},{3}",
+                    DateTime.Now,
+                    pos.x, pos.y, pos.z
+                );
+                gazeData.Add(gazeDataLine);
+                break;
 
-        // Store the formatted string in the list
-        positionData.Add(positionDataLine);
+            case "eye":
+                string eyeDataLine = string.Format(
+                    "{0},{1},{2},{3}",
+                    DateTime.Now,
+                    pos.x, pos.y, pos.z
+                );
+                eyeData.Add(eyeDataLine);
+                break;
+
+            case "result":
+                string resultDataLine = string.Format(
+                    "{0},{1}",
+                    DateTime.Now,
+                    FinalResult
+                );
+                resultData.Add(resultDataLine);
+                break;
+        }
     }
 
-    public void SavePositionData()
+    public void SaveAllData()
     {
-        Debug.Log(positionDataFilePath);
         // Write the list of position data lines to the CSV file after each round
-        File.AppendAllLines(positionDataFilePath, positionData);
+        File.AppendAllLines(headPath, headData);
+
+        File.AppendAllLines(gazePath, gazeData);
+
+        File.AppendAllLines(eyePath, eyeData);
+
+        File.AppendAllLines(resultPath, resultData);
+
+        Debug.Log("Saved Data");
 
         // Clear the list after saving
-        positionData.Clear();
+        headData.Clear();
+        gazeData.Clear();
+        eyeData.Clear();
+        resultData.Clear();
     }
 }
