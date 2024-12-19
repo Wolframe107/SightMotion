@@ -5,7 +5,7 @@ using System.IO;
 
 public class SaveData : MonoBehaviour
 {
-    public gameObject posVec;
+    public GameObject posVec;
     private TargetHandler handlerScript;
 
 
@@ -20,7 +20,7 @@ public class SaveData : MonoBehaviour
         positionData = new List<string>();
         positionDataFilePath = Path.Combine(Application.persistentDataPath, "TEST.csv");
         if (File.Exists(positionDataFilePath)){
-            File.Delete()
+            File.Delete(positionDataFilePath);
         }
 
 
@@ -36,7 +36,7 @@ public class SaveData : MonoBehaviour
         string positionDataLine = string.Format(
             "{0},{1},{2},{3}",
             DateTime.Now,
-            currentTrackerPosition.x, currentTrackerPosition.y, currentTrackerPosition.z,
+            currentTrackerPosition.x, currentTrackerPosition.y, currentTrackerPosition.z
         );
 
         // Store the formatted string in the list
