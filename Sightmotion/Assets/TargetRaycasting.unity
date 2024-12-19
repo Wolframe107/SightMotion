@@ -3726,11 +3726,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 405c9920c6e9e2c45b36732bbbdb1adc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldOfView: 60
+  fieldOfView: 90
   targetSpawnInterval: 5
   targetMaxTime: 30
   lookAtTimeScale: 10
-  targetCount: 10
+  targetCount: 30
   targetDistance: 3
   targetScale: 0.3
   allowance: 0.2

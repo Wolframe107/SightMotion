@@ -82,11 +82,12 @@ public class TargetHandler : MonoBehaviour {
         
         // Calculate angle, evenly spaces targets around player
         int i = targetTimers.Count + (targetCount % 2 == 0 ? 2 : 1);
-        float angle = (i / 2) * (fieldOfView / (targetCount + 1)) * Mathf.Deg2Rad * (i % 2 == 0 ? 1 : -1) + Mathf.PI / 2;
-        angle -= 0.5f * (fieldOfView / (targetCount + 1)) * Mathf.Deg2Rad * (i % 2 == 0 ? 1 : -1) * (targetCount % 2 == 0 ? 1 : 0);
+        float angle = (i / 2) * (fieldOfView / (targetCount / 2 + 1)) * Mathf.Deg2Rad * (i % 2 == 0 ? 1 : -1) + Mathf.PI / 2;
+        angle -= 0.5f * (fieldOfView / (targetCount / 2 + 1)) * Mathf.Deg2Rad * (i % 2 == 0 ? 1 : -1) * (targetCount % 2 == 0 ? 1 : 0);
+        angle -= fieldOfView * (i % 2 == 0 ? 1 : -1) * (i / targetCount);
         
         // Set position
-        target.transform.position = transform.position + targetDistance * new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
+        target.transform.position = transform.position + targetDistance * new Vector3(Mathf.Cos(angle), ((i / 2) % 2 == 0 ? 1 : -1) * (i / 2) / targetCount, Mathf.Sin(angle));
         target.transform.localScale *= targetScale;
         target.transform.parent = transform;
 
