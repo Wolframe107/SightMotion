@@ -19,10 +19,12 @@ public class SaveData : MonoBehaviour
         if (File.Exists(positionDataFilePath)){
             File.Delete(positionDataFilePath);
         }
+        Debug.Log(positionDataFilePath);
 
 
         // Write the header line to the position data file
         File.WriteAllText(positionDataFilePath, "TimeStamp, PosX, PosY, PosZ\n"); // ändra till rätt grejer
+        Debug.Log("Completed Start");
     }
 
     void Update()
