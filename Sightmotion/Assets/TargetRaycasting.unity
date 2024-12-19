@@ -3736,7 +3736,7 @@ MonoBehaviour:
   allowance: 0.2
   StartMenu: {fileID: 3746857693082144914}
   GameOverMenu: {fileID: 405540443}
-  gameOverText: {fileID: 0}
+  gameOverText: {fileID: 1918422040}
 --- !u!4 &1298462531
 Transform:
   m_ObjectHideFlags: 0
