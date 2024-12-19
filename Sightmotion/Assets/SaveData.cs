@@ -7,9 +7,6 @@ public class SaveData : MonoBehaviour
 {
     public GameObject posVec;
     private TargetHandler handlerScript;
-
-
-
     private string positionDataFilePath; // ändra till rätt data
     private List<string> positionData;
 
