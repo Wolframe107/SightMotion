@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 
 public class SaveData : MonoBehaviour
-{
-    public GameObject posVec;
-    private TargetHandler handlerScript;
+{   
     private string headPath;
     private string gazePath;
     private string eyePath;
@@ -19,7 +17,6 @@ public class SaveData : MonoBehaviour
 
     void Start()
     {
-        handlerScript = posVec.GetComponent<TargetHandler>();
         headData = new List<string>();
         gazeData = new List<string>();
         eyeData = new List<string>();

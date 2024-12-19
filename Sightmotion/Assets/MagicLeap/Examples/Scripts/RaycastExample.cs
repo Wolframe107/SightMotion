@@ -52,11 +52,13 @@ namespace MagicLeap
         private MLControllerConnectionHandlerBehavior _controllerConnectionHandler = null;
 
         //private RaycastMode _raycastMode = RaycastMode.Controller;
-        private RaycastMode _raycastMode = RaycastMode.Head;
+        public RaycastMode _raycastMode = RaycastMode.Head;
 
         private int _modeCount = System.Enum.GetNames(typeof(RaycastMode)).Length;
 
         private float _confidence = 0.0f;
+
+        public GameObject TargetHandler;
 
         /// <summary>
         /// Validate all required components and sets event handlers.
@@ -103,6 +105,10 @@ namespace MagicLeap
             _raycastHead.gameObject.SetActive(false);
             _raycastEyes.gameObject.SetActive(false);
             _raycastMode = RaycastMode.Head;
+
+            TargetHandler = GameObject.Find("TargetHandler");
+            TargetHandler.GetComponent<TargetHandler>().isEyeTracking = false;
+
             //_raycastMode = RaycastMode.Head;
             UpdateRaycastMode();
 
@@ -145,12 +151,14 @@ namespace MagicLeap
                 } 
                 */
                 case RaycastMode.Head:
-                {
+                {   
+                    TargetHandler.GetComponent<TargetHandler>().isEyeTracking = false;
                     EnableRaycast(_raycastHead);
                     break;
                 }
                 case RaycastMode.Eyes:
-                {
+                {   
+                    TargetHandler.GetComponent<TargetHandler>().isEyeTracking = true;
                     EnableRaycast(_raycastEyes);
                     break;
                 }

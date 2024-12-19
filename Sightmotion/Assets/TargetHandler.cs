@@ -36,6 +36,9 @@ public class TargetHandler : MonoBehaviour {
 
     public GameObject camera;
 
+    public GameObject raycastExample;
+    public bool isEyeTracking = false;
+
     void Start() {
         StartMenu.SetActive(true);
         GameOverMenu.SetActive(false);
@@ -72,19 +75,25 @@ public class TargetHandler : MonoBehaviour {
             }
         }
 
-        saveData.WriteData("head", Camera.main.transform.eulerAngles);
+        saveData.WriteData("head", camera.transform.eulerAngles);
     }
 
     // Updates target timer if hit
     public void RayCastHit(Vector3 target) {
         if (!running) { return; }
-        if (Physics.Raycast(Camera.main.transform.position, target - Camera.main.transform.position, out RaycastHit hit)) {
+        if (Physics.Raycast(camera.transform.position, target - camera.transform.position, out RaycastHit hit)) {
             if (targetTimers.ContainsKey(hit.collider.gameObject)) {
-                saveData.WriteData("gaze", Quaternion.LookRotation(Camera.main.transform.forward).eulerAngles);
-                
-                saveData.WriteData("eye", Quaternion.LookRotation(hit.point - Camera.main.transform.position).eulerAngles);
-
+            
                 targetTimers[hit.collider.gameObject] = Mathf.Max(0.0f, targetTimers[hit.collider.gameObject] - Time.deltaTime * lookAtTimeScale);
+
+                saveData.WriteData("gaze", Quaternion.LookRotation(camera.transform.forward).eulerAngles);
+                if(isEyeTracking){
+                    saveData.WriteData("eye", Quaternion.LookRotation(hit.point - camera.transform.position).eulerAngles);
+                }
+                else{
+                    saveData.WriteData("eye", new Vector3(0f,0f,0f));
+                }
+                
             }
         }
     }
