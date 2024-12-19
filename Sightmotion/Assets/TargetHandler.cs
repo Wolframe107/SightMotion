@@ -6,13 +6,13 @@ using UnityEngine.UI;
 public class TargetHandler : MonoBehaviour {
 
     [Header("Gameplay Settings")]
-    public float fieldOfView = 180.0f;
+    public float fieldOfViewVertical = 60.0f;
+    public float fieldOfViewHorizontal = 120.0f;
     public float targetSpawnInterval = 10.0f;
     public float targetMaxTime = 60.0f;
     public float lookAtTimeScale = 10.0f;
 
     [Header("Target Settings")]
-    public int targetCount = 10;
     public float targetDistance = 10.0f;
     public float targetScale = 1f;
     [Tooltip("The distance from the target that the raycast will hit")]
@@ -22,6 +22,7 @@ public class TargetHandler : MonoBehaviour {
     private float startTime = 0.0f;
     private float targetSpawnTimer = 0.0f;
     private Dictionary<GameObject, float> targetTimers = new Dictionary<GameObject, float>();
+    private HashSet<Vector3> targetPositions = new HashSet<Vector3>();
 
     private bool running = false;
 
@@ -30,20 +31,29 @@ public class TargetHandler : MonoBehaviour {
 
     public GameObject gameOverText;
 
+    public GameObject audioSource;
+
+    public GameObject camera;
+
     void Start() {
         StartMenu.SetActive(true);
         GameOverMenu.SetActive(false);
+
+        // Seed random consistently
+        Random.InitState((int)5723751);
     }
 
     // Update is called once per frame
     void Update() {
         if (!running) { return; }
 
+        transform.position = camera.transform.position;
+
         // Update target spawn timer
         targetSpawnTimer -= Time.deltaTime;
 
         // Add target if interval has passed
-        if (targetSpawnTimer <= 0.0f && targetTimers.Count < targetCount) {
+        if (targetSpawnTimer <= 0.0f) {
             AddTarget();
             targetSpawnTimer = targetSpawnInterval;
         }
@@ -79,20 +89,35 @@ public class TargetHandler : MonoBehaviour {
         SphereCollider collider = target.AddComponent<SphereCollider>();
         collider.radius *= (1 + allowance);
         target.name = "Target";
-        
-        // Calculate angle, evenly spaces targets around player
-        int i = targetTimers.Count + (targetCount % 2 == 0 ? 2 : 1);
-        float angle = (i / 2) * (fieldOfView / (targetCount / 2 + 1)) * Mathf.Deg2Rad * (i % 2 == 0 ? 1 : -1) + Mathf.PI / 2;
-        angle -= 0.5f * (fieldOfView / (targetCount / 2 + 1)) * Mathf.Deg2Rad * (i % 2 == 0 ? 1 : -1) * (targetCount % 2 == 0 ? 1 : 0);
-        angle -= fieldOfView * (i % 2 == 0 ? 1 : -1) * (i / targetCount);
-        
-        // Set position
-        target.transform.position = transform.position + targetDistance * new Vector3(Mathf.Cos(angle), ((i / 2) % 2 == 0 ? 1 : -1) * (i / 2) / targetCount, Mathf.Sin(angle));
-        target.transform.localScale *= targetScale;
-        target.transform.parent = transform;
 
-        // Add to list
-        targetTimers.Add(target, 0.0f);
+        int n = 0;
+        while (n < 100) {
+            Vector3 position = new Vector3(Random.Range(-5, 5) / 5.0f, Random.Range(-3, 3) / 3.0f, 1.0f);
+            if (!targetPositions.Contains(position)) {
+                targetPositions.Add(position);
+
+                float angleX = position.x * fieldOfViewHorizontal / 2.0f;
+                float angleY = position.y * fieldOfViewVertical / 2.0f;
+
+                // Rotate around camera
+                Vector3 targetPosition = Quaternion.Euler(-angleY, angleX, 0) * Camera.main.transform.forward;
+
+                // Set position
+                target.transform.position = transform.position + targetPosition * targetDistance;
+                target.transform.localScale *= targetScale;
+                target.transform.parent = transform;
+
+                // Add to list
+                targetTimers.Add(target, 0.0f);
+
+                // Play sound on spawn position
+                audioSource.transform.position = target.transform.position;
+                audioSource.GetComponent<AudioSource>().Play();
+
+                return;
+            }
+            n++;
+        }
     }
 
     // Game over
@@ -121,6 +146,7 @@ public class TargetHandler : MonoBehaviour {
 
         // Clear list
         targetTimers = new Dictionary<GameObject, float>();
+        targetPositions = new HashSet<Vector3>();
     }
 
     // Start game
