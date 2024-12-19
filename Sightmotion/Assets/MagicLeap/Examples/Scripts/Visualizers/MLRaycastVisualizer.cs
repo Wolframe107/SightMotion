@@ -98,7 +98,7 @@ namespace MagicLeap
         {
             if (state != MLRaycast.ResultState.RequestFailed && state != MLRaycast.ResultState.NoCollision)
             {
-                targetHandler.RayCastHit(result);
+                targetHandler.RayCastHit(result.point);
 
                 gameObject.SetActive(true);
                 // Update the cursor position and normal.

@@ -22,8 +22,23 @@ public class TargetHandler : MonoBehaviour {
     private float targetSpawnTimer = 0.0f;
     private Dictionary<GameObject, float> targetTimers = new Dictionary<GameObject, float>();
 
+    private bool running = false;
+
+    public GameObject StartMenu;
+    public GameObject GameOverMenu;
+
+    public GameObject gameOverText;
+
+    void Start() {
+        StartMenu.SetActive(true);
+        GameOverMenu.SetActive(false);
+    }
+
     // Update is called once per frame
     void Update() {
+        if (!running) { return; }
+
+        // Update target spawn timer
         targetSpawnTimer -= Time.deltaTime;
 
         // Add target if interval has passed
@@ -46,9 +61,12 @@ public class TargetHandler : MonoBehaviour {
     }
 
     // Updates target timer if hit
-    public void RayCastHit(RaycastHit hit) {
-        if (targetTimers.ContainsKey(hit.collider.gameObject)) {
-            targetTimers[hit.collider.gameObject] = Mathf.Max(0.0f, targetTimers[hit.collider.gameObject] - Time.deltaTime * lookAtTimeScale);
+    public void RayCastHit(Vector3 target) {
+        if (!running) { return; }
+        if (Physics.Raycast(Camera.main.transform.position, target - Camera.main.transform.position, out RaycastHit hit)) {
+            if (targetTimers.ContainsKey(hit.collider.gameObject)) {
+                targetTimers[hit.collider.gameObject] = Mathf.Max(0.0f, targetTimers[hit.collider.gameObject] - Time.deltaTime * lookAtTimeScale);
+            }
         }
     }
 
@@ -77,13 +95,41 @@ public class TargetHandler : MonoBehaviour {
 
     // Game over
     public void GameOver() {
-        Debug.Log("Game Over, Time survived: " + (Time.time - startTime));
+
+        // Set game over text
+        gameOverText.GetComponent<TextMesh>().text = "Game Over\nTargets Activated: " + targetTimers.Count + "\nTime: " + (Time.time - startTime).ToString("F2") + "s";
+
+        // Stop game
+        StartMenu.SetActive(false);
+        GameOverMenu.SetActive(true);
+
+        running = false;
+    }
+
+    public void RestartGame() {
+        StartMenu.SetActive(true);
+        GameOverMenu.SetActive(false);
+
+        // Destroy all
+        GameObject[] targets = new GameObject[targetTimers.Count];
+        targetTimers.Keys.CopyTo(targets, 0);
+        foreach (GameObject target in targets) {
+            Destroy(target);
+        }
+
+        // Clear list
+        targetTimers = new Dictionary<GameObject, float>();
     }
 
     // Start game
     public void StartGame() {
         startTime = Time.time;
         targetSpawnTimer = targetSpawnInterval;
-        targetTimers.Clear();
+
+        // Start game
+        StartMenu.SetActive(false);
+        GameOverMenu.SetActive(false);
+
+        running = true;
     }
 }
