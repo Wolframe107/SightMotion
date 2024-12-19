@@ -11,8 +11,6 @@ public class SaveData : MonoBehaviour
 
 
     private string positionDataFilePath; // ändra till rätt data
-    public GameObject Head; 
-    public GameObject Stylus;
     private List<string> positionData;
 
     void Start()
@@ -32,7 +30,7 @@ public class SaveData : MonoBehaviour
 
     void Update()
     {
-        Vector3 currentTrackerPosition = handlerScript.resultPoint
+        Vector3 currentTrackerPosition = handlerScript.resultPoint;
 
         // Format the current positions into a string for the CSV file
         string positionDataLine = string.Format(
